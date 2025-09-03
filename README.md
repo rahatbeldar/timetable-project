@@ -46,29 +46,28 @@ Ensure you have **Python 3.8 or higher** installed on your computer.
 ### Step 2: Project Download
 Download or clone this repository:
 
-```bash
 git clone https://github.com/rahatbeldar/timetable-project.git
 cd timetable-project
+
 ### Step 3: Install Dependencies
 Run this command inside the project folder:
-
 pip install -r requirements.txt
 
-###Step 4: Initialize Database
+### Step 4: Initialize Database
 Run this command once to create the database (timetable.db):
 
 flask init-db
 
-Step 5: Start the Application
+### Step 5: Start the Application
 
 Run the development server:
 
 flask run
 
 
-##You will see an output with a local URL, e.g. http://127.0.0.1:5000.
+#### You will see an output with a local URL, e.g. http://127.0.0.1:5000.
 
-###🚀 How to Use (Kaise Istemal Karein)
+### 🚀 How to Use (Kaise Istemal Karein)
 
 Open the web app in your browser → http://127.0.0.1:5000
 
@@ -88,10 +87,11 @@ Monitor progress in the log panel.
 
 When done, download the generated Excel timetable.
 
-📜 Copyright and License
+### 📜 Copyright and License
 
 This project is proprietary and confidential.
 Copyright © 2025 Rahat Beldar. All Rights Reserved.
 
 Unauthorized copying, distribution, or use of this software, via any medium, is strictly prohibited.
+
 
