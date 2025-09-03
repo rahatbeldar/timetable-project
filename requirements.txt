@@ -1,0 +1,14 @@
+Flask Web Framework
+Flask
+
+Data Manipulation Library
+pandas
+
+Google OR-Tools for AI Solver
+ortools
+
+Library for reading/writing Excel files (used by pandas)
+openpyxl
+
+Asynchronous HTTP Client (for Gemini API calls, optional for web version)
+aiohttp

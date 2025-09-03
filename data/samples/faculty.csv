@@ -1,0 +1,11 @@
+faculty_id,faculty_name,subjects
+F01,Dr. Sharma,"CS101,CS201,CS301"
+F02,Prof. Gupta,"MA101"
+F03,Dr. Verma,"PHY101"
+F04,Prof. Singh,"DB201"
+F05,Prof. Khan,"CS-ELEC-1A,CS-ELEC-1B"
+F06,Dr. Patel,"ME101"
+F07,Prof. Reddy,"MTX201"
+F08,Dr. Iyer,"EE201"
+F09,Prof. Kumar,"CN301"
+

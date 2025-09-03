@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Timetable Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-button.active { border-color: #3b82f6; color: #3b82f6; }
+        .loader { border-top-color: #3498db; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">AI-Powered Timetable Generator</h1>
+            <p class="text-gray-600 mt-2">Apne college ka data manage karein aur ek click mein timetable banayein.</p>
+        </header>
+
+        <!-- Main Control Panel -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2">Control Panel</h2>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <button id="generate-btn" class="w-full md:w-auto bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" /></svg>
+                    Generate Timetable
+                </button>
+                <div id="download-link-container" class="hidden w-full md:w-auto">
+                     <a id="download-link" href="#" class="w-full md:w-auto bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        Download Timetable
+                    </a>
+                </div>
+            </div>
+            <!-- Log Display -->
+            <div class="mt-4">
+                <h3 class="font-semibold mb-2">Status / Logs:</h3>
+                <pre id="log-output" class="bg-gray-900 text-white text-sm rounded-lg p-4 h-48 overflow-y-auto">System taiyar hai...</pre>
+            </div>
+        </div>
+
+        <!-- Data Management Section -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <div class="flex flex-wrap border-b border-gray-200">
+                <button class="tab-button p-4 font-semibold border-b-2 border-transparent active" data-table="courses">Courses</button>
+                <button class="tab-button p-4 font-semibold border-b-2 border-transparent" data-table="subjects">Subjects</button>
+                <button class="tab-button p-4 font-semibold border-b-2 border-transparent" data-table="faculty">Faculty</button>
+                <button class="tab-button p-4 font-semibold border-b-2 border-transparent" data-table="rooms">Classrooms</button>
+                <button class="tab-button p-4 font-semibold border-b-2 border-transparent" data-table="labs">Labs</button>
+            </div>
+
+            <div class="py-4">
+                <!-- File Upload and Sample Download -->
+                <div class="bg-blue-50 p-4 rounded-lg flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+                    <div>
+                        <label for="csv-upload" class="font-semibold">Upload CSV for <span id="current-table-name" class="font-bold">Courses</span>:</label>
+                        <input type="file" id="csv-upload" accept=".csv" class="mt-2 md:mt-0 md:ml-2 text-sm">
+                        <button id="upload-btn" class="bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-indigo-600">Upload</button>
+                    </div>
+                     <a href="#" id="sample-download-link" class="text-blue-600 hover:underline text-sm font-semibold">Download Sample CSV</a>
+                </div>
+
+                <!-- Data Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead id="data-table-head" class="bg-gray-200">
+                            <!-- JS se generate hoga -->
+                        </thead>
+                        <tbody id="data-table-body">
+                            <!-- JS se generate hoga -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- State Management ---
+    let currentTable = 'courses';
+    const logOutput = document.getElementById('log-output');
+
+    // --- DOM Elements ---
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tableHead = document.getElementById('data-table-head');
+    const tableBody = document.getElementById('data-table-body');
+    const generateBtn = document.getElementById('generate-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const csvInput = document.getElementById('csv-upload');
+    const currentTableNameSpan = document.getElementById('current-table-name');
+    const sampleDownloadLink = document.getElementById('sample-download-link');
+    const downloadContainer = document.getElementById('download-link-container');
+    const downloadLink = document.getElementById('download-link');
+
+    // --- API Functions ---
+    async function fetchData(tableName) {
+        try {
+            log(`'${tableName}' ka data fetch kiya ja raha hai...`);
+            const response = await fetch(`/api/data/${tableName}`);
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const data = await response.json();
+            renderTable(data);
+            log(`'${tableName}' ka data safaltapoorvak load hua.`);
+        } catch (error) {
+            console.error('Fetch error:', error);
+            log(`Error: ${tableName} ka data fetch nahi ho saka. Kya database initialize kiya hai?`);
+            tableHead.innerHTML = '';
+            tableBody.innerHTML = `<tr><td class="p-4 text-red-500">Data load nahi ho saka.</td></tr>`;
+        }
+    }
+
+    // --- Rendering Functions ---
+    function renderTable(data) {
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
+        if (data.length === 0) {
+            tableBody.innerHTML = `<tr><td class="p-4 text-center text-gray-500" colspan="100%">Koi data nahi mila. Kripya CSV upload karein.</td></tr>`;
+            return;
+        }
+        
+        const headers = Object.keys(data[0]);
+        const headerRow = document.createElement('tr');
+        headers.forEach(header => {
+            const th = document.createElement('th');
+            th.className = 'text-left py-3 px-4 uppercase font-semibold text-sm';
+            th.textContent = header.replace(/_/g, ' ');
+            headerRow.appendChild(th);
+        });
+        tableHead.appendChild(headerRow);
+
+        data.forEach(rowData => {
+            const row = document.createElement('tr');
+            row.className = 'border-b hover:bg-gray-50';
+            headers.forEach(header => {
+                const td = document.createElement('td');
+                td.className = 'py-3 px-4';
+                td.textContent = rowData[header];
+                row.appendChild(td);
+            });
+            tableBody.appendChild(row);
+        });
+    }
+    
+    function log(message) {
+        logOutput.textContent += `\n> ${message}`;
+        logOutput.scrollTop = logOutput.scrollHeight; // Auto-scroll
+    }
+
+    // --- Event Handlers ---
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            currentTable = button.dataset.table;
+            currentTableNameSpan.textContent = currentTable.charAt(0).toUpperCase() + currentTable.slice(1);
+            sampleDownloadLink.href = `/download/sample_${currentTable}.csv`;
+            fetchData(currentTable);
+        });
+    });
+
+    generateBtn.addEventListener('click', async () => {
+        log('Timetable generation shuru ho raha hai...');
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<div class="loader w-5 h-5 border-4 rounded-full"></div> Please wait...';
+        downloadContainer.classList.add('hidden');
+
+        try {
+            const response = await fetch('/api/generate', { method: 'POST' });
+            const result = await response.json();
+
+            if (response.ok) {
+                log('SERVER LOGS:\n' + result.log);
+                log(result.message);
+                downloadLink.href = `/download/${result.output_file}`;
+                downloadContainer.classList.remove('hidden');
+            } else {
+                log('--- ERROR ---');
+                log('SERVER LOGS:\n' + result.log);
+                log(`Error: ${result.error}`);
+            }
+        } catch (error) {
+            log('Fatal error: Server se communicate nahi ho saka.');
+            console.error(error);
+        } finally {
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = 'Generate Timetable';
+        }
+    });
+
+    uploadBtn.addEventListener('click', async () => {
+        if (csvInput.files.length === 0) {
+            log('Error: Upload karne ke liye file chunein.');
+            return;
+        }
+        const file = csvInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('table_name', currentTable);
+
+        log(`'${file.name}' upload ho raha hai...`);
+        try {
+            const response = await fetch('/api/upload', { method: 'POST', body: formData });
+            const result = await response.json();
+            if (response.ok) {
+                log(result.message);
+                fetchData(currentTable); // Refresh table data
+            } else {
+                log(`Upload Error: ${result.error}`);
+            }
+        } catch (error) {
+            log('Fatal upload error: Server se communicate nahi ho saka.');
+        } finally {
+            csvInput.value = ''; // Reset file input
+        }
+    });
+
+    // --- Initial Load ---
+    document.addEventListener('DOMContentLoaded', () => {
+        sampleDownloadLink.href = `/download/sample_courses.csv`;
+        fetchData(currentTable);
+    });
+</script>
+
+</body>
+</html>

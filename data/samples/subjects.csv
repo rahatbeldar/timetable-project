@@ -1,0 +1,23 @@
+subject_id,subject_name,course_id,lecture_hours,lab_hours,is_elective,elective_group
+CS101,Intro to Programming,CT-FY-A,3,2,N,
+MA101,Mathematics-I,CT-FY-A,4,0,N,
+PHY101,Physics,CT-FY-A,3,2,N,
+CS101,Intro to Programming,CT-FY-B,3,2,N,
+MA101,Mathematics-I,CT-FY-B,4,0,N,
+PHY101,Physics,CT-FY-B,3,2,N,
+CS201,Data Structures,CT-SY-A,3,2,N,
+DB201,Database Systems,CT-SY-A,3,2,N,
+CS-ELEC-1A,Web Development,CT-SY-A,2,2,Y,CT-SY-ELEC1
+CS-ELEC-1B,Mobile Development,CT-SY-A,2,2,Y,CT-SY-ELEC1
+CS201,Data Structures,CT-SY-B,3,2,N,
+DB201,Database Systems,CT-SY-B,3,2,N,
+CS-ELEC-1A,Web Development,CT-SY-B,2,2,Y,CT-SY-ELEC1
+CS-ELEC-1B,Mobile Development,CT-SY-B,2,2,Y,CT-SY-ELEC1
+CS301,Operating Systems,CT-TY,3,2,N,
+CN301,Computer Networks,CT-TY,4,0,N,
+ME101,Basic Mechanical,MTX-FY,3,2,N,
+MA101,Mathematics-I,MTX-FY,4,0,N,
+PHY101,Physics,MTX-FY,3,2,N,
+MTX201,Control Systems,MTX-SY,3,2,N,
+EE201,Basic Electronics,MTX-SY,3,2,N,
+
