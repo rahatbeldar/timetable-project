@@ -1,76 +1,97 @@
 ﻿# timetable-project
+# 🎓 AI-Powered College Timetable Generation System
 
-================================================= AI-Powered College Timetable Generation System
-Version: 2.8
-Author: Rahat Beldar
-Copyright (c) 2025 Rahat Beldar. All Rights Reserved.
+**Version:** 2.8  
+**Author:** Rahat Beldar  
+**Copyright © 2025 Rahat Beldar. All Rights Reserved.**
 
-1. Introduction (Parichay)
-Yeh ek advanced web application hai jo engineering colleges jaise bade sansthaano ke liye apne aap timetable banane ke liye design kiya gaya hai. Yeh system Google OR-Tools ke shaktishali AI solver ka istemal karke kai chunautiyon (constraints) jaise faculty ki uplabdhata, kam classrooms, multiple departments, aur elective subjects ko dhyaan mein rakhte hue ek behtareen timetable banata hai.
+---
 
-2. Features (Khaasiyat)
-Web-Based User Interface: CSV files ko aasaani se upload aur manage karne ke liye ek saral web page.
+## 📖 Introduction (Parichay)
 
-Centralized Database: Saara data ek SQLite database mein store hota hai, jisse data ko manage karna aasan ho jaata hai.
+This is an advanced **AI-powered web application** designed to automatically generate timetables for large institutions such as engineering colleges.  
+The system leverages **Google OR-Tools**, a powerful AI solver, to handle multiple challenges like faculty availability, limited classrooms, multiple departments, and elective subjects to produce an optimized timetable.
 
-Powerful AI Core: Google OR-Tools ka istemal karke complex se complex scheduling samasyaon ko suljhata hai.
+---
 
-Advanced Constraints: Yeh system first-year se final-year tak, shared faculty, aur elective subjects ko aasaani se handle karta hai.
+## ✨ Features (Khaasiyat)
 
-Conflict Analysis: Agar timetable banana sambhav na ho, to system saaf-saaf batata hai ki data mein kya galti hai (jaise "Is subject ke liye koi teacher nahi hai").
+- **🌐 Web-Based User Interface** – Simple UI to upload and manage CSV files.  
+- **🗄️ Centralized Database** – All data stored in **SQLite**, making management easy.  
+- **🤖 Powerful AI Core** – Uses **Google OR-Tools** to solve complex scheduling problems.  
+- **📚 Advanced Constraints** – Handles first-year to final-year courses, shared faculty, and electives.  
+- **⚠️ Conflict Analysis** – Detects missing/invalid data and provides error messages (e.g., *“Is subject ke liye koi teacher nahi hai”*).  
+- **📊 Excel Export** – Generates complete timetable with separate sheets for courses and faculty.  
+- **📂 Sample Data** – Sample CSV files available to help users understand the format.
 
-Excel Export: Poora timetable courses aur faculty ke liye alag-alag sheets ke saath ek Excel file mein export hota hai.
+---
 
-Sample Data: Users ko data format samajhane mein madad karne ke liye sample files download karne ka vikalp.
+## 🛠️ Technology Stack (Takneek)
 
-3. Technology Stack (Takneek)
-Backend: Python, Flask
+- **Backend:** Python, Flask  
+- **Frontend:** HTML, CSS, JavaScript  
+- **Database:** SQLite  
+- **AI Solver:** Google OR-Tools (`ortools`)  
+- **Data Handling:** Pandas  
 
-Frontend: HTML, CSS, JavaScript
+---
 
-Database: SQLite
+## ⚙️ Setup and Installation (Kaise Install Karein)
 
-AI Solver: Google OR-Tools (ortools)
+Follow these steps to run the project on your local system:
 
-Data Handling: Pandas
+### Step 1: Prerequisites
+Ensure you have **Python 3.8 or higher** installed on your computer.
 
-4. Setup and Installation (Kaise Install Karein)
-Is project ko apne local computer par chalane ke liye, neeche diye gaye steps follow karein:
+### Step 2: Project Download
+Download or clone this repository:
 
-Step 1: Prerequisites
-Sunishchit karein ki aapke computer par Python 3.8 ya usse naya version install hai.
+```bash
+git clone https://github.com/rahatbeldar/timetable-project.git
+cd timetable-project
+Step 3: Install Dependencies
 
-Step 2: Project Download Karein
-Is project ki saari files ko ek folder mein download ya clone karein.
-
-Step 3: Dependencies Install Karein
-Terminal kholein, project folder mein jayein, aur neeche di gayi command chalayein:
+Run this command inside the project folder:
 
 pip install -r requirements.txt
+Step 4: Initialize Database
 
-Step 4: Database Banayein
-Usi terminal mein, yeh command sirf ek baar chalayein. Isse timetable.db file ban jayegi.
+Run this command once to create the database (timetable.db):
 
 flask init-db
 
-Step 5: Application Chalu Karein
-Ab, web server shuru karne ke liye yeh command chalayein:
+Step 5: Start the Application
+
+Run the development server:
 
 flask run
 
-Aapko terminal mein ek URL dikhega, jaise http://127.0.0.1:5000.
 
-5. How to Use (Kaise Istemal Karein)
-Apne web browser mein http://127.0.0.1:5000 kholein.
+You will see an output with a local URL, e.g. http://127.0.0.1:5000.
 
-Shuru mein, sabhi tables khali hongi. Har tab (Courses, Subjects, etc.) par jaakar pehle "Download Sample CSV" par click karein taaki aapko data ka sahi format pata chal sake.
+🚀 How to Use (Kaise Istemal Karein)
 
-Apni CSV files taiyar karein aur "Upload CSV" button ka istemal karke unhein upload karein.
+Open the web app in your browser → http://127.0.0.1:5000
 
-Jab saara data upload ho jaye, "Generate Timetable" button par click karein.
+Initially, all tables will be empty.
 
-Process poora hone ke baad, aapko log panel mein status dikhega aur "Download Timetable" ka link mil jayega.
+For each tab (Courses, Subjects, Faculty, etc.):
 
-6. Copyright and License
+Click Download Sample CSV to see the correct format.
+
+Prepare your CSV files accordingly.
+
+Upload CSV files using the Upload CSV button.
+
+Once all data is uploaded, click Generate Timetable.
+
+Monitor progress in the log panel.
+
+When done, download the generated Excel timetable.
+
+📜 Copyright and License
+
 This project is proprietary and confidential.
-Copyright (c) 2025 Rahat Beldar. All Rights Reserved. Unauthorized copying, distribution, or use of this software, via any medium, is strictly prohibited.
+Copyright © 2025 Rahat Beldar. All Rights Reserved.
+
+Unauthorized copying, distribution, or use of this software, via any medium, is strictly prohibited.
